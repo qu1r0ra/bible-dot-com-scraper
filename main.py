@@ -281,26 +281,24 @@ def scrape_version(
         print(f"\n=== Processing book {book} ===")
         book_out = []
         raw_html_accumulator = []  # collect raw HTML per book
-        chapter = 1
-        # We'll keep trying chapters until we get a 404 or no verses returned for N consecutive attempts
-        consecutive_not_found = 0
-        max_empty = 2
-        pbar = None
 
-        while True:
+        # Get the valid chapter numbers for this book
+        book_meta = next(
+            b for b in fetch_books_and_chapters(version_id) if b["book_code"] == book
+        )
+        valid_chapters = book_meta["chapters"]
+
+        print(f"Processing {book}: {len(valid_chapters)} chapters -> {valid_chapters}")
+
+        for chapter in valid_chapters:
             json_url, params = construct_json_url(
                 build_id, locale, version_id, book, chapter, version_code, route=route
             )
             data = fetch_json_with_retries(json_url, params=params)
-            if data is None:
-                # 404 or nothing — assume end of book
-                consecutive_not_found += 1
-                if consecutive_not_found >= max_empty:
-                    break
-                else:
-                    chapter += 1
-                    time.sleep(sleep_between)
-                    continue
+            if not data:
+                print(f"⚠️ Failed to fetch {book} {chapter}, skipping.")
+                time.sleep(sleep_between)
+                continue
 
             # reset not found counter
             consecutive_not_found = 0
