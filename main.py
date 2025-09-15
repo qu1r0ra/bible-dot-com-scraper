@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 from tqdm import tqdm
 import pandas as pd
 import sys
+import html
 
 # ---------------------------
 # Configuration / Defaults
@@ -388,7 +389,7 @@ def scrape_version(
             # --- NEW: Save the entire raw HTML for the book into a single .txt ---
             raw_txt_path = os.path.join(outdir, f"{version_code}_{book}_raw.txt")
             with open(raw_txt_path, "w", encoding="utf-8") as f:
-                f.write("\n".join(raw_html_accumulator))
+                f.write(html.unescape("\n".join(raw_html_accumulator)))
             print(f"Wrote {out_json_path}, {out_csv_path}, and {raw_txt_path}")
         else:
             print(f"No data collected for {book}")
