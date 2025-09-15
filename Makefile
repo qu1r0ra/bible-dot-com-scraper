@@ -8,19 +8,19 @@ OUTDIR = ./data
 
 # Ivatan
 iv:
-	$(PYTHON) $(SCRIPT) --version-id 1315 --version-code VTSP --build-id Gbf1VTI_yCzErvb8C5sg_ --locale en-GB --outdir $(OUTDIR)/VTSP
+	$(PYTHON) $(SCRIPT) --version-id 1315 --version-code VTSP --build-id 9su_rXNs9ssXM9qYjdWxG --locale en --outdir backup/VTSP
 
 # Pangasinense
 pa:
-	$(PYTHON) $(SCRIPT) --version-id 2194 --version-code MBBPAN83 --build-id Gbf1VTI_yCzErvb8C5sg_ --locale en-GB --outdir $(OUTDIR)/MBBPAN83
+	$(PYTHON) $(SCRIPT) --version-id 1166 --version-code PNPV --build-id 9su_rXNs9ssXM9qYjdWxG --locale en --outdir backup/PNPV
 
 # Tagalog
 ta:
-	$(PYTHON) $(SCRIPT) --version-id 144 --version-code MBB05 --build-id Gbf1VTI_yCzErvb8C5sg_ --locale en-GB --outdir $(OUTDIR)/MBB05
+	$(PYTHON) $(SCRIPT) --version-id 144 --version-code MBB05 --build-id 9su_rXNs9ssXM9qYjdWxG --locale en --outdir backup/MBB05
 
 # Yami
 ya:
-	$(PYTHON) $(SCRIPT) --version-id 2364 --version-code SNT --build-id Gbf1VTI_yCzErvb8C5sg_ --locale en --outdir $(OUTDIR)/SNT
+	$(PYTHON) $(SCRIPT) --version-id 2364 --version-code SNT --build-id 9su_rXNs9ssXM9qYjdWxG --locale en --outdir backup/SNT
 
 # === Aggregate commands ===
 # Run all scraping jobs sequentially
