@@ -1,33 +1,47 @@
-# Makefile for scraping multiple Bible versions
+# Scraping variables
 
-PYTHON = python
-SCRIPT = main.py
-OUTDIR = ./data
+SCRAPE_SCRIPT = src/main.py
+SCRAPE_OUTDIR = ./raw
 
 # === Individual scraping commands ===
 
 # Ivatan
 iv:
-	$(PYTHON) $(SCRIPT) --version-id 1315 --version-code VTSP --build-id 9su_rXNs9ssXM9qYjdWxG --locale en --outdir backup/VTSP
+	python $(SCRAPE_SCRIPT) --version-id 1315 --version-code VTSP --build-id 9su_rXNs9ssXM9qYjdWxG --locale en --outdir $(SCRAPE_OUTDIR)/VTSP
 
 # Pangasinense
 pa:
-	$(PYTHON) $(SCRIPT) --version-id 1166 --version-code PNPV --build-id 9su_rXNs9ssXM9qYjdWxG --locale en --outdir backup/PNPV
+	python $(SCRAPE_SCRIPT) --version-id 1166 --version-code PNPV --build-id 9su_rXNs9ssXM9qYjdWxG --locale en --outdir $(SCRAPE_OUTDIR)/PNPV
 
 # Tagalog
 ta:
-	$(PYTHON) $(SCRIPT) --version-id 144 --version-code MBB05 --build-id 9su_rXNs9ssXM9qYjdWxG --locale en --outdir backup/MBB05
+	python $(SCRAPE_SCRIPT) --version-id 144 --version-code MBB05 --build-id 9su_rXNs9ssXM9qYjdWxG --locale en --outdir $(SCRAPE_OUTDIR)/MBB05
 
 # Yami
 ya:
-	$(PYTHON) $(SCRIPT) --version-id 2364 --version-code SNT --build-id 9su_rXNs9ssXM9qYjdWxG --locale en --outdir backup/SNT
+	python $(SCRAPE_SCRIPT) --version-id 2364 --version-code SNT --build-id 9su_rXNs9ssXM9qYjdWxG --locale en --outdir $(SCRAPE_OUTDIR)/SNT
 
 # === Aggregate commands ===
 # Run all scraping jobs sequentially
-all: iv pa ta ya
+scrape-all: iv pa ta ya
 
 # Clean up all scraped data
-clean:
+scrape-clean:
 	@echo "Cleaning all generated data..."
 	rm -rf $(OUTDIR)/*
+	@echo "Clean complete."
+
+# Cleaning variables
+
+CLEAN_SCRIPT = src/cleaner.py
+CLEAN_OUTDIR = cleaned
+
+# === Individual cleaning commands ===
+
+clean:
+	python ${CLEAN_SCRIPT}
+
+remove-clean:
+	@echo "Cleaning all cleaned data..."
+	rm -rf $(CLEAN_OUTDIR)/*
 	@echo "Clean complete."
