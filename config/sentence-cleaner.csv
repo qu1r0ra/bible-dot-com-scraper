@@ -6,17 +6,27 @@ Step,Search,Replace,Mode / Remarks,Explanation
 5,"<span class=""(?!verse|content)[^<]*",,RegEx,Remove non-verse tags and their text
 6,"<span class=""content"">",,RegEx,Remove content class tags
 7,^\s*\n?,,RegEx,Remove extra starting spaces and newlines
-8,[\s\n]*<[^>]*>,\n,RegEx,Separate verses into different lines
-9,\[\d?\s*,,RegEx,Remove edge case unnecessary tags
-10,[([\])],,RegEx,Remove parentheses and brackets
-11,^\n,,RegEx,Remove extra newlines
-12,"\b\s{2,}",<space>,RegEx,Remove extra spaces between words
-13,^ +,,RegEx,Remove extra spaces at the start of each line
-14,([^\w.?!”)’]+[”’]*)(\n),$1<space>,RegEx,Connect sentence fragments separated by newline
-15,\n([a-z]),<space>$1,RegEx,Connect lines beginning with lowercase letters
-17,(\w)\n,$1<space>,RegEx,Connect lines ending with non-sentence terminators
-18,"([^,][.?!”’])(\s)",$1\n,RegEx,Separate sentences into different lines
-19,\d\),,RegEx,Remove number lists
-20,\n([a-z]),<space>$1,RegEx,Connect lines beginning with lowercase letters
-21,^ +,,RegEx,Remove extra spaces in the front of each line
+8,"(<span class=""verse v\d+""[^>]*>)([^<]*)\1",$1<space>$2,RegEx,Remove duplicate tags (sorry for the spam T-T)
+9,"(<span class=""verse v\d+""[^>]*>)([^<]*)\1",$1<space>$2,RegEx,Remove duplicate tags
+10,"(<span class=""verse v\d+""[^>]*>)([^<]*)\1",$1<space>$2,RegEx,Remove duplicate tags
+11,"(<span class=""verse v\d+""[^>]*>)([^<]*)\1",$1<space>$2,RegEx,Remove duplicate tags
+12,"(<span class=""verse v\d+""[^>]*>)([^<]*)\1",$1<space>$2,RegEx,Remove duplicate tags
+13,"(<span class=""verse v\d+""[^>]*>)([^<]*)\1",$1<space>$2,RegEx,Remove duplicate tags
+14,"(<span class=""verse v\d+""[^>]*>)([^<]*)\1",$1<space>$2,RegEx,Remove duplicate tags
+15,"(<span class=""verse v\d+""[^>]*>)([^<]*)\1",$1<space>$2,RegEx,Remove duplicate tags
+16,"(<span class=""verse v\d+""[^>]*>)([^<]*)\1",$1<space>$2,RegEx,Remove duplicate tags
+17,"(<span class=""verse v\d+""[^>]*>)([^<]*)\1",$1<space>$2,RegEx,Remove duplicate tags
+18,[\s\n]*<[^>]*>,\n,RegEx,Separate verses into different lines
+19,\[\d?\s*,,RegEx,Remove edge case unnecessary tags
+20,[([\])],,RegEx,Remove parentheses and brackets
+21,^\n,,RegEx,Remove extra newlines
+22,"\b\s{2,}",<space>,RegEx,Remove extra spaces between words
+23,^ +,,RegEx,Remove extra spaces at the start of each line
+24,([^\w.?!”)’]+[”’]*)(\n),$1<space>,RegEx,Connect sentence fragments separated by newline
+25,\n([a-z]),<space>$1,RegEx,Connect lines beginning with lowercase letters
+26,(\w)\n,$1<space>,RegEx,Connect lines ending with non-sentence terminators
+27,"([^,][.?!”’])(\s)",$1\n,RegEx,Separate sentences into different lines
+28,\d\),,RegEx,Remove number lists
+29,\n([a-z]),<space>$1,RegEx,Connect lines beginning with lowercase letters
+30,^ +,,RegEx,Remove extra spaces in the front of each line
 KATAPOSAN,,,,
