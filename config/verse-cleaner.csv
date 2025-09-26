@@ -7,6 +7,9 @@ Step,Search,Replace,Mode / Remarks,Explanation
 6,"<span class=""content"">",,RegEx,Remove content class tags
 7,^\s*\n?,,RegEx,Remove extra starting spaces and newlines
 8,[\s\n]*<[^>]*>,\n,RegEx,Separate verses into different lines
-9,^\n,,Regex,Remove extra newlines
-10,"\b\s{2,}",<space>,RegEx,Remove extra spaces between words
+9,\[\d?\s*,,RegEx,Remove edge case unnecessary tags
+10,[([\])],,RegEx,Remove parentheses and brackets
+11,^\n,,RegEx,Remove extra newlines
+12,"\b\s{2,}",<space>,RegEx,Remove extra spaces between words
+13,^ +,,RegEx,Remove extra spaces at the start of each line
 KATAPOSAN,,,,
