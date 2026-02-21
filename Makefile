@@ -1,9 +1,11 @@
-# Scraping variables
-
-SCRAPE_SCRIPT = src/main.py
+SCRAPE_SCRIPT = src/scraper.py
 SCRAPE_OUTDIR = ./raw
 
-# === Individual scraping commands ===
+CLEAN_SCRIPT = src/cleaner.py
+CLEAN_OUTDIR = ./cleaned
+CONFIG_DIR = ./configs
+
+# --- Individual scraping commands
 
 # Ivatan
 iv:
@@ -21,25 +23,19 @@ ta:
 ya:
 	python $(SCRAPE_SCRIPT) --version-id 2364 --version-code SNT --build-id 9su_rXNs9ssXM9qYjdWxG --locale en --outdir $(SCRAPE_OUTDIR)/SNT
 
-# === Aggregate commands ===
-# Run all scraping jobs sequentially
+# Aggregate cleaning
+
 scrape-all: iv pa ta ya
 
-# Clean up all scraped data
 scrape-clean:
 	@echo "Cleaning all generated data..."
-	rm -rf $(OUTDIR)/*
+	rm -rf $(SCRAPE_OUTDIR)/*
 	@echo "Clean complete."
 
-# Cleaning variables
-
-CLEAN_SCRIPT = src/cleaner.py
-CLEAN_OUTDIR = cleaned
-
-# === Individual cleaning commands ===
+# Individual cleaning
 
 clean:
-	python ${CLEAN_SCRIPT}
+	python $(CLEAN_SCRIPT) --raw-dir $(SCRAPE_OUTDIR) --cleaned-dir $(CLEAN_OUTDIR) --sentence-config $(CONFIG_DIR)/sentence-cleaner.csv --verse-config $(CONFIG_DIR)/verse-cleaner.csv
 
 remove-clean:
 	@echo "Cleaning all cleaned data..."
