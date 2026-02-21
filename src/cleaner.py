@@ -1,21 +1,14 @@
-import os
+import argparse
+import logging
 import re
 import csv
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent  # project-root/
-RAW_DIR = BASE_DIR / "raw"
-CLEANED_DIR = BASE_DIR / "cleaned"
 
-# Separate step files
-SENTENCE_STEPS_FILE = BASE_DIR / "config" / "sentence-cleaner.csv"
-VERSE_STEPS_FILE = BASE_DIR / "config" / "verse-cleaner.csv"
-
-
-def load_steps(filename):
+def load_steps(filename: str | Path) -> list[tuple[re.Pattern, str]]:
     placeholder_map = {
         "<space>": " ",
-        "$": "\\",  # convert `$1` → `\1`
+        "$": "\\",
     }
 
     steps = []
@@ -25,7 +18,6 @@ def load_steps(filename):
             search = row["Search"].strip()
             replace = row["Replace"] if row["Replace"] else ""
 
-            # Apply placeholder mapping to replacement string
             for placeholder, real in placeholder_map.items():
                 replace = replace.replace(placeholder, real)
 
@@ -34,26 +26,26 @@ def load_steps(filename):
     return steps
 
 
-def clean_text(text, steps):
+def clean_text(text: str, steps: list[tuple[re.Pattern, str]]) -> str:
     for pattern, repl in steps:
         text = pattern.sub(repl, text)
     return text
 
 
-def process_files(raw_dir, cleaned_dir, steps):
+def process_files(
+    raw_dir: Path, cleaned_dir: Path, steps: list[tuple[re.Pattern, str]]
+) -> None:
     for txt_file in raw_dir.rglob("*.txt"):
         rel_path = txt_file.relative_to(raw_dir)
         out_path = cleaned_dir / rel_path
 
-        # --- Adjust filename ---
-        stem = out_path.stem  # filename without extension
+        stem = out_path.stem
         if stem.endswith("_raw"):
-            new_stem = stem[:-4] + "_cleaned"  # replace _raw with _cleaned
+            new_stem = stem[:-4] + "_cleaned"
         else:
-            new_stem = stem + "_cleaned"  # fallback if no _raw
+            new_stem = stem + "_cleaned"
         out_path = out_path.with_name(new_stem + out_path.suffix)
 
-        # --- Process text ---
         out_path.parent.mkdir(parents=True, exist_ok=True)
 
         with open(txt_file, "r", encoding="utf-8") as f:
@@ -64,14 +56,30 @@ def process_files(raw_dir, cleaned_dir, steps):
         with open(out_path, "w", encoding="utf-8") as f:
             f.write(cleaned)
 
-        print(f"✔ Cleaned {txt_file} -> {out_path}")
+        logging.info(f"Cleaned {txt_file} -> {out_path}")
 
 
 if __name__ == "__main__":
-    # --- Sentence cleaning ---
-    sentence_steps = load_steps(SENTENCE_STEPS_FILE)
-    process_files(RAW_DIR, CLEANED_DIR / "sentence", sentence_steps)
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+    parser = argparse.ArgumentParser(description="Clean raw scraped TXT files.")
+    parser.add_argument(
+        "--raw-dir", required=True, help="Directory containing raw TXT files."
+    )
+    parser.add_argument(
+        "--cleaned-dir", required=True, help="Directory to save cleaned TXT files."
+    )
+    parser.add_argument(
+        "--sentence-config", required=True, help="Path to sentence-cleaner.csv"
+    )
+    parser.add_argument(
+        "--verse-config", required=True, help="Path to verse-cleaner.csv"
+    )
+    args = parser.parse_args()
 
-    # --- Verse cleaning ---
-    verse_steps = load_steps(VERSE_STEPS_FILE)
-    process_files(RAW_DIR, CLEANED_DIR / "verse", verse_steps)
+    raw_dir = Path(args.raw_dir)
+    cleaned_dir = Path(args.cleaned_dir)
+
+    sentence_steps = load_steps(args.sentence_config)
+    process_files(raw_dir, cleaned_dir / "sentence", sentence_steps)
+    verse_steps = load_steps(args.verse_config)
+    process_files(raw_dir, cleaned_dir / "verse", verse_steps)
