@@ -1,9 +1,9 @@
 # bible-dot-com-scraper-parser
 
-A modular toolset for scraping, cleaning, parsing, and aligning parallel corpora from bible.com translations.
+A modular toolset for scraping, cleaning, parsing, and aligning parallel corpora from [bible.com](https://www.bible.com/) translations.
 
 > [!CAUTION]
-> **Disclaimer:** This is not necessarily the best or most efficient way to scrape data from bible.com. This toolset was developed and confirmed to work back in September 2025. Changes to the website's structure or API may affect its current functionality.
+> **Disclaimer:** This is not necessarily the best or most efficient way to scrape data from [bible.com](https://www.bible.com/). This toolset was developed and confirmed to work back in September 2025. Changes to the website's structure or API may affect its current functionality.
 
 ## Project Structure
 
